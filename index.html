@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>wpdb - Windows Phone Database</title>
+    <meta name="title" content="wpdb - Legacy Windows Phone Firmware Archive">
+    <meta name="description" content="Community-driven archive for OEMs Windows Phone firmware. Download ROMs, RUUs, and tools for HTC, Samsung, and other legacy devices.">
+    <meta name="keywords" content="Windows Phone, Firmware, ROM, RUU, FFU, HTC, Samsung, Lumia, Archive, wpdb">
+    <meta name="author" content="wpdb">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wpdb.lumiadb.com/">
+    <meta property="og:title" content="wpdb - Windows Phone Database">
+    <meta property="og:description" content="Download firmware, tools, and guides for legacy OEM Windows Phone devices (HTC, Samsung, HP).">
+    <meta property="og:image" content="https://wpdb.lumiadb.com/assets/site/wpdb-og.png">
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://wpdb.dev/">
+    <meta property="twitter:title" content="wpdb - Windows Phone Database">
+    <meta property="twitter:description" content="Download firmware, tools, and guides for legacy Windows Phone devices (HTC, Samsung, HP).">
+    <meta property="twitter:image" content="https://wpdb.lumiadb.com/assets/site/wpdb-og.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Segoe UI"', '"Helvetica Neue"', 'sans-serif'],
+                        light: ['"Segoe UI Light"', '"Segoe UI"', 'sans-serif'],
+                        semilight: ['"Segoe UI Semilight"', '"Segoe UI"', 'sans-serif'],
+                        mono: ['"Consolas"', '"Monaco"', 'monospace'],
+                    },
+                    colors: {
+                        wp: {
+                            blue: '#2d89ef',
+                            dark: '#1d1d1d',
+                            gray: '#999999',
+                            lightgray: '#f0f0f0',
+                        }
+                    },
+                    transitionTimingFunction: {
+                        'metro': 'cubic-bezier(0.1, 0.9, 0.2, 1)', 
+                    },
+                    animation: {
+                        'page-enter': 'pageEnter 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                        'tile-enter': 'tileEnter 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                        'content-slide': 'contentSlide 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                        'toast-in': 'toastIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                        'toast-out': 'toastOut 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                    },
+                    keyframes: {
+                        pageEnter: {
+                            '0%': { transform: 'translateX(30px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        tileEnter: {
+                            '0%': { transform: 'perspective(500px) rotateX(10deg) translateY(30px) scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'perspective(500px) rotateX(0deg) translateY(0) scale(1)', opacity: '1' },
+                        },
+                        contentSlide: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        toastIn: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        toastOut: {
+                            '0%': { transform: 'translateY(0)', opacity: '1' },
+                            '100%': { transform: 'translateY(-20px)', opacity: '0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+        
+        body { font-family: "Segoe UI", sans-serif; }
+        h1, h2, h3 { font-family: "Segoe UI Light", "Segoe UI", sans-serif; font-weight: 300; }
+        .font-metro { font-family: "Segoe UI Semilight", sans-serif; }
+        .tile-pressed { transform: scale(0.95) !important; transition: transform 0.1s ease-out; }
+    </style>
+</head>
+<body class="bg-white text-[#333] h-screen flex flex-col overflow-hidden selection:bg-wp-blue selection:text-white">
+
+    <header class="bg-black text-white h-14 flex items-center justify-between px-4 md:px-6 shrink-0 z-50 shadow-md">
+        
+        <div class="flex items-center gap-4">
+            <button onclick="toggleMobileSidebar()" class="md:hidden text-white hover:text-wp-blue transition-colors p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+
+            <div class="flex items-center gap-2 cursor-pointer group" onclick="goToHome()">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-wp-blue transform rotate-3 group-hover:rotate-0 transition-transform duration-300 ease-metro rounded-sm"></div>
+                    <div class="absolute inset-0 bg-white/20 transform -rotate-3 group-hover:rotate-0 transition-transform duration-300 ease-metro rounded-sm"></div>
+                    <i class="fa-solid fa-layer-group text-white relative z-10 text-sm"></i>
+                </div>
+                
+                <div class="flex flex-col leading-none">
+                    <span class="text-base font-bold tracking-wide">wpdb</span>
+                    <span class="text-[9px] text-gray-400 tracking-[0.2em] font-light">BETA</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8 text-sm font-metro tracking-wide">
+            <button onclick="goToHome()" class="hover:text-wp-blue transition-colors duration-200 ease-metro">devices</button>
+            <button onclick="toggleModal('toolsModal')" class="hover:text-wp-blue transition-colors duration-200 ease-metro">tools</button>
+            <button onclick="toggleModal('aboutModal')" class="hover:text-wp-blue transition-colors duration-200 ease-metro">about</button>
+        </div>
+
+        <div class="flex md:hidden items-center gap-2">
+            <button onclick="toggleModal('toolsModal')" class="p-2 text-gray-300 hover:text-white transition-colors" title="Tools">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+            </button>
+            <button onclick="toggleModal('aboutModal')" class="p-2 text-gray-300 hover:text-white transition-colors" title="About">
+                <i class="fa-solid fa-circle-info"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        
+        <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
+
+        <aside id="main-sidebar" class="fixed inset-y-0 left-0 z-40 w-72 bg-[#f5f5f5] border-r border-gray-200 flex flex-col transform -translate-x-full md:translate-x-0 md:relative md:flex shrink-0 transition-transform duration-300 ease-metro shadow-2xl md:shadow-none pt-14 md:pt-0">
+            
+            <div class="p-4 border-b border-gray-200 bg-[#f5f5f5]">
+                <div class="relative group">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs group-focus-within:text-wp-blue transition-colors"></i>
+                    <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="search collection..." 
+                        class="w-full bg-white border border-gray-300 rounded-none pl-8 pr-2 py-2 text-sm focus:border-wp-blue focus:ring-1 focus:ring-wp-blue outline-none transition-all duration-200 ease-metro">
+                </div>
+            </div>
+            <div id="deviceSidebar" class="flex-1 overflow-y-auto p-4 space-y-6">
+                </div>
+        </aside>
+
+        <main id="mainContent" class="flex-1 bg-white overflow-y-auto relative p-0 w-full">
+            
+            <div id="homeView" class="w-full min-h-full flex flex-col">
+                <div class="p-6 md:p-10 pb-0">
+                    <div class="mb-6 md:mb-10 border-b border-gray-200 pb-4 animate-content-slide">
+                        <h1 class="text-4xl md:text-6xl text-black mb-1">welcome to wpdb</h1>
+                        <p class="text-base md:text-xl text-wp-blue font-light">select a device to start</p>
+                    </div>
+                    <div id="homeGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+                        </div>
+                </div>
+            </div>
+
+            <div id="deviceView" class="absolute inset-0 bg-white hidden flex flex-col overflow-y-auto w-full">
+                </div>
+
+        </main>
+    </div>
+
+    <div id="toolsModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-metro" onclick="toggleModal('toolsModal')">
+        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl p-8 transform transition-transform duration-500 ease-metro translate-x-full" onclick="event.stopPropagation()">
+            
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-4xl font-light text-wp-blue">tools</h2>
+                <button onclick="toggleModal('toolsModal')" class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
+            </div>
+
+            <div class="space-y-8">
+                <a href="https://github.com/ReneLergner/WPinternals/releases/latest" target="_blank" class="group block cursor-pointer">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">Windows Phone Internals</h3>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                    </div>
+                    <p class="text-sm text-gray-500">Unlock bootloader and enable Mass Storage mode on Lumia devices.</p>
+                </a>
+
+                <a href="https://xdaforums.com/t/the-official-ruu-of-m8-for-windows-phone-verizon-edition.2865351/" target="_blank" class="group block cursor-pointer">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">RUU thingy idk</h3>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                    </div>
+                    <p class="text-sm text-gray-500">Essential flashing utility for HTC phones.</p>
+                </a>
+
+                <a href="https://archive.org/details/wdrt-hl1" target="_blank" class="group block cursor-pointer">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">Windows Device Recovery Tool</h3>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                    </div>
+                    <p class="text-sm text-gray-500">Includes <strong>Thor2</strong> command line tool for flashing generic FFUs.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-metro" onclick="toggleModal('aboutModal')">
+        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl p-8 transform transition-transform duration-500 ease-metro translate-x-full" onclick="event.stopPropagation()">
+             <div class="flex justify-between items-center mb-8">
+                <h2 class="text-4xl font-light text-wp-blue">about</h2>
+                <button onclick="toggleModal('aboutModal')" class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
+            </div>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                <strong>wpdb</strong> is a community-maintained archive of Windows Phone firmware files and resources for Windows Phone devices that are not from Nokia/Microsoft.
+                <br><br>
+                Our mission is to preserve the legacy of Windows Phone by providing easy access to essential files for recovery.
+                <br><br>
+                This project is not affiliated with Microsoft or any device manufacturers. All firmware files are the property of their respective owners.
+                <br><br>
+                Made with ❤️ by LumiaDB & ACPI Fixed Feature Button.
+            </p>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-4 md:top-20 right-4 md:right-6 bg-black text-white px-6 py-4 shadow-2xl z-50 hidden flex items-center gap-3 border-l-4 border-wp-blue max-w-[90vw]">
+        <i class="fa-solid fa-check text-wp-blue"></i>
+        <div>
+            <h4 class="font-bold text-sm uppercase tracking-wider">Success</h4>
+            <p class="text-xs text-gray-300">Link copied to clipboard</p>
+        </div>
+    </div>
+
+    <script src="js/db.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
