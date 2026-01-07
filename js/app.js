@@ -8,8 +8,21 @@ const metroColors = [
     'bg-[#99b433]', 'bg-[#da532c]', 'bg-[#603cba]', 'bg-[#00a300]'
 ];
 
+let wpdbData = [];
+
 // init
-function init() {
+async function init() {
+    try {
+        let response = await fetch('database.json');
+        if (!response.ok) {
+            response = await fetch('database.json');
+        }
+        
+        wpdbData = await response.json();
+    } catch (error) {
+        console.error('Failed to load database.json:', error);
+    }
+
     renderSidebar();
     renderHome();
     
