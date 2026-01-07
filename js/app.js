@@ -430,15 +430,24 @@ function toggleModal(id) {
     const m = document.getElementById(id);
     const panel = m.querySelector('.absolute');
     
+    // Check if we are opening (it has the 'hidden' class)
     if (m.classList.contains('hidden')) {
+        // 1. Unhide
         m.classList.remove('hidden');
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                panel.classList.remove('translate-x-full');
-            });
-        });
+        
+        // 2. Force browser to recognize the DOM change (Reflow)
+        void m.offsetWidth; 
+        
+        // 3. Animate IN (Fade Background + Slide Panel)
+        m.classList.remove('opacity-0');
+        panel.classList.remove('translate-x-full');
+        
     } else {
+        // 1. Animate OUT (Fade Background + Slide Panel)
+        m.classList.add('opacity-0');
         panel.classList.add('translate-x-full');
+        
+        // 2. Wait for animation (300ms) then Hide
         setTimeout(() => {
             m.classList.add('hidden');
         }, 300);
