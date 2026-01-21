@@ -4,7 +4,7 @@ const homeGrid = document.getElementById('homeGrid');
 const sidebar = document.getElementById('deviceSidebar');
 
 const metroColors = [
-    'bg-[#2d89ef]', 'bg-[#00aba9]', 'bg-[#2b5797]', 'bg-[#b91d47]', 
+    'bg-[#2d89ef]', 'bg-[#00aba9]', 'bg-[#2b5797]', 'bg-[#b91d47]',
     'bg-[#99b433]', 'bg-[#da532c]', 'bg-[#603cba]', 'bg-[#00a300]'
 ];
 
@@ -16,10 +16,10 @@ async function init() {
         const response = await fetch('database.json');
         if (!response.ok) throw new Error("Failed to load database.json");
         wpdbData = await response.json();
-        
+
         renderSidebar();
         renderHome();
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const deviceCode = urlParams.get('device');
         if (deviceCode) {
@@ -29,8 +29,8 @@ async function init() {
     } catch (error) {
         console.error("Error loading database:", error);
     }
-    
-    window.onpopstate = function(event) {
+
+    window.onpopstate = function (event) {
         if (event.state && event.state.device) {
             openDevice(event.state.device, false);
         } else {
@@ -41,9 +41,10 @@ async function init() {
 
 function renderSidebar() {
     let html = '';
+    let delay = 0;
     wpdbData.forEach(brand => {
         html += `
-            <div class="mb-6 brand-group">
+            <div class="mb-6 brand-group animate-list-cascade" style="animation-delay: ${delay}ms; opacity: 0; animation-fill-mode: forwards;">
                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 pl-2 border-l-2 border-wp-blue">
                     ${brand.brand}
                 </h3>
@@ -52,7 +53,7 @@ function renderSidebar() {
                         <li 
                             onclick="openDevice('${d.codename}')"
                             id="nav-${d.codename}"
-                            class="sidebar-item px-3 py-1.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400 border-l-4 border-transparent transition-all duration-300 ease-metro hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-[#1f1f1f] hover:border-gray-200 dark:hover:border-[#444] truncate"
+                            class="sidebar-item px-3 py-1.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400 border-l-4 border-transparent transition-all duration-200 ease-metro hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-[#1f1f1f] hover:border-gray-200 dark:hover:border-[#444] truncate active:scale-[0.98]"
                             data-name="${d.name.toLowerCase()} ${d.codename.toLowerCase()}"
                         >
                             ${d.name}
@@ -61,6 +62,7 @@ function renderSidebar() {
                 </ul>
             </div>
         `;
+        delay += 50;
     });
     sidebar.innerHTML = html;
 }
@@ -72,7 +74,7 @@ function renderHome() {
     wpdbData.forEach(brand => {
         brand.devices.forEach((d, index) => {
             const colorClass = metroColors[(d.name.charCodeAt(0) + index) % metroColors.length];
-            
+
             html += `
                 <div 
                     onclick="handleTileClick(this, '${d.codename}')"
@@ -114,7 +116,7 @@ function handleTileClick(element, codename) {
             openDevice(codename);
             setTimeout(() => element.classList.remove('tile-pressed'), 300);
         });
-    }, 50); 
+    }, 50);
 }
 
 function goToHome(updateHistory = true) {
@@ -124,7 +126,7 @@ function goToHome(updateHistory = true) {
 
     deviceView.classList.add('hidden');
     homeView.classList.remove('hidden');
-    
+
     document.querySelectorAll('.sidebar-item').forEach(el => {
         el.classList.remove('border-wp-blue', 'bg-white', 'dark:bg-[#1f1f1f]', 'text-black', 'dark:text-white', 'shadow-sm');
         el.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
@@ -143,7 +145,7 @@ function openDevice(codename, updateHistory = true) {
         el.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
     });
     const activeItem = document.getElementById(`nav-${codename}`);
-    if(activeItem) {
+    if (activeItem) {
         activeItem.classList.remove('border-transparent', 'text-gray-600', 'dark:text-gray-400');
         activeItem.classList.add('border-wp-blue', 'bg-white', 'dark:bg-[#1f1f1f]', 'text-black', 'dark:text-white', 'shadow-sm');
     }
@@ -168,7 +170,7 @@ function openDevice(codename, updateHistory = true) {
     homeView.classList.add('hidden');
     deviceView.classList.remove('hidden');
     deviceView.classList.remove('animate-page-enter');
-    void deviceView.offsetWidth; 
+    void deviceView.offsetWidth;
     deviceView.classList.add('animate-page-enter');
 
     const specs = device.specs || { cpu: "N/A", ram: "N/A", storage: "N/A", display: "N/A", battery: "N/A" };
@@ -238,8 +240,8 @@ function openDevice(codename, updateHistory = true) {
                                     <span class="font-semibold">Region:</span> ${fw.region}
                                 </div>
                                 
-                                ${fw.files && fw.files.length > 0 ? 
-                                    `<div class="space-y-2">
+                                ${fw.files && fw.files.length > 0 ?
+            `<div class="space-y-2">
                                         ${fw.files.map(f => `
                                             <div class="flex items-center gap-2">
                                                 <button onclick="copyLink('${f.url}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
@@ -249,14 +251,14 @@ function openDevice(codename, updateHistory = true) {
                                             </div>
                                         `).join('')}
                                     </div>`
-                                    : 
-                                    `<div class="flex items-center gap-2">
+            :
+            `<div class="flex items-center gap-2">
                                         <button onclick="copyLink('${fw.url}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
                                         <a href="${fw.url}" class="block w-full bg-black dark:bg-white text-white dark:text-black text-center py-3 font-bold uppercase tracking-wide shadow-md active:scale-95 transition-transform">
                                             Download (${fw.size})
                                         </a>
                                     </div>`
-                                }
+        }
                             </div>
                         `).join('')}
                     </div>
@@ -281,8 +283,8 @@ function openDevice(codename, updateHistory = true) {
                                             ${fw.region}
                                         </td>
                                         <td class="py-5 px-6 align-top text-right pt-6">
-                                            ${fw.files && fw.files.length > 0 ? 
-                                                `<div class="flex flex-col items-end gap-2">
+                                            ${fw.files && fw.files.length > 0 ?
+                `<div class="flex flex-col items-end gap-2">
                                                     ${fw.files.map(f => `
                                                         <div class="flex items-center justify-end gap-2 w-full">
                                                             <button onclick="copyLink('${f.url}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors px-2"><i class="fa-regular fa-copy"></i></button>
@@ -296,15 +298,15 @@ function openDevice(codename, updateHistory = true) {
                                                         </div>
                                                     `).join('')}
                                                 </div>`
-                                                : 
-                                                `<div class="inline-flex items-center gap-2 justify-end">
+                :
+                `<div class="inline-flex items-center gap-2 justify-end">
                                                     <button onclick="copyLink('${fw.url}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors p-2"><i class="fa-regular fa-copy"></i></button>
                                                     <a href="${fw.url}" class="inline-flex items-center gap-3 bg-black dark:bg-white hover:bg-wp-blue dark:hover:bg-wp-blue text-white dark:text-black dark:hover:text-white px-6 py-3 transition-colors shadow-lg hover:shadow-xl active:scale-95 duration-200">
                                                         <span class="font-bold tracking-wide text-xs uppercase">Download</span>
                                                         <span class="text-white/50 dark:text-black/50 text-xs border-l border-white/20 dark:border-black/20 pl-3">${fw.size}</span>
                                                     </a>
                                                 </div>`
-                                            }
+            }
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -354,12 +356,12 @@ function openDevice(codename, updateHistory = true) {
 
 function switchPivot(tabName) {
     const tabs = ['downloads', 'specs', 'guide'];
-    
+
     // Deactivate all first
     tabs.forEach(t => {
         const btn = document.getElementById(`pivot-btn-${t}`);
         const content = document.getElementById(`pivot-content-${t}`);
-        if(btn && content) {
+        if (btn && content) {
             btn.classList.replace('text-black', 'text-gray-300');
             btn.classList.replace('dark:text-white', 'dark:text-gray-600');
             btn.classList.replace('border-black', 'border-transparent');
@@ -376,10 +378,10 @@ function switchPivot(tabName) {
         activeBtn.classList.replace('text-gray-300', 'text-black');
         activeBtn.classList.replace('dark:text-gray-600', 'dark:text-white');
         activeBtn.classList.replace('border-transparent', 'border-black');
-        activeBtn.classList.replace('border-transparent', 'dark:border-white'); 
-        
+        activeBtn.classList.replace('border-transparent', 'dark:border-white');
+
         activeContent.classList.remove('hidden');
-        void activeContent.offsetWidth; 
+        void activeContent.offsetWidth;
         activeContent.classList.add('animate-content-slide');
         activeContent.style.animationDelay = "0ms";
         activeContent.style.opacity = "0";
@@ -392,7 +394,7 @@ function filterDevices() {
     const items = document.querySelectorAll('.sidebar-item');
     const brands = document.querySelectorAll('.brand-group');
     let hasResults = false;
-    
+
     items.forEach(item => {
         const name = item.getAttribute('data-name');
         if (name.includes(query)) {
@@ -412,7 +414,7 @@ function filterDevices() {
     });
 
     if (!hasResults) {
-        if(!document.getElementById('empty-msg')) {
+        if (!document.getElementById('empty-msg')) {
             const msg = document.createElement('div');
             msg.id = 'empty-msg';
             msg.className = 'p-8 text-center text-gray-400';
@@ -428,10 +430,10 @@ function filterDevices() {
 function toggleModal(id) {
     const m = document.getElementById(id);
     const panel = m.querySelector('.absolute');
-    
+
     if (m.classList.contains('hidden')) {
         m.classList.remove('hidden');
-        void m.offsetWidth; 
+        void m.offsetWidth;
         m.classList.remove('opacity-0');
         panel.classList.remove('translate-x-full');
     } else {
@@ -449,7 +451,7 @@ function copyLink(url) {
         const toast = document.getElementById('toast');
         toast.classList.remove('hidden');
         toast.classList.add('animate-toast-in');
-        
+
         setTimeout(() => {
             toast.classList.remove('animate-toast-in');
             toast.classList.add('animate-toast-out');
@@ -465,7 +467,7 @@ function toggleMobileSidebar() {
     const sidebar = document.getElementById('main-sidebar');
     const overlay = document.getElementById('mobile-overlay');
     const isOpen = !sidebar.classList.contains('-translate-x-full');
-    
+
     if (isOpen) {
         sidebar.classList.add('-translate-x-full');
         overlay.classList.remove('opacity-100');
@@ -473,11 +475,44 @@ function toggleMobileSidebar() {
         setTimeout(() => overlay.classList.add('hidden'), 300);
     } else {
         overlay.classList.remove('hidden');
-        void overlay.offsetWidth; 
+        void overlay.offsetWidth;
         overlay.classList.add('opacity-100');
         overlay.classList.remove('opacity-0');
         sidebar.classList.remove('-translate-x-full');
     }
 }
 
+function dismissDevModal() {
+    const m = document.getElementById('devModal');
+    const content = document.getElementById('devModalContent');
+
+    content.classList.remove('translate-y-0', 'opacity-100', 'scale-100');
+    content.classList.add('translate-y-4', 'opacity-0', 'scale-95');
+
+    m.classList.remove('opacity-100');
+    m.classList.add('opacity-0');
+
+    setTimeout(() => {
+        m.classList.add('hidden');
+    }, 300);
+}
+
+function showDevModal() {
+    const m = document.getElementById('devModal');
+    const content = document.getElementById('devModalContent');
+
+    m.classList.remove('hidden');
+    void m.offsetWidth; // trigger reflow
+    m.classList.remove('opacity-0');
+    m.classList.add('opacity-100');
+
+    setTimeout(() => {
+        content.classList.remove('translate-y-4', 'opacity-0', 'scale-95');
+        content.classList.add('translate-y-0', 'opacity-100', 'scale-100');
+    }, 100);
+}
+
 init();
+
+// beta notice
+setTimeout(showDevModal, 1000);

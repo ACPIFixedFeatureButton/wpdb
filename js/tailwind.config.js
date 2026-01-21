@@ -16,22 +16,20 @@ tailwind.config = {
                     dark: '#1d1d1d',
                     gray: '#999999',
                     lightgray: '#f0f0f0',
+                    red: '#ff0000ff',
                 }
             },
             transitionTimingFunction: {
-                'metro': 'cubic-bezier(0.1, 0.9, 0.2, 1)', 
-            },
-            animation: {
-                'page-enter': 'pageEnter 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
-                'tile-enter': 'tileEnter 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
-                'content-slide': 'contentSlide 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
-                'toast-in': 'toastIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
-                'toast-out': 'toastOut 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'metro': 'cubic-bezier(0.1, 0.9, 0.2, 1)',
             },
             keyframes: {
                 pageEnter: {
                     '0%': { transform: 'translateX(30px)', opacity: '0' },
                     '100%': { transform: 'translateX(0)', opacity: '1' },
+                },
+                pageEnterTurn: {
+                    '0%': { transform: 'perspective(1000px) rotateY(15deg) translateZ(-50px)', opacity: '0' },
+                    '100%': { transform: 'perspective(1000px) rotateY(0) translateZ(0)', opacity: '1' },
                 },
                 tileEnter: {
                     '0%': { transform: 'perspective(500px) rotateX(10deg) translateY(30px) scale(0.9)', opacity: '0' },
@@ -41,6 +39,10 @@ tailwind.config = {
                     '0%': { transform: 'translateY(20px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
                 },
+                listCascade: {
+                    '0%': { transform: 'translateX(20px)', opacity: '0' },
+                    '100%': { transform: 'translateX(0)', opacity: '1' },
+                },
                 toastIn: {
                     '0%': { transform: 'translateY(-20px)', opacity: '0' },
                     '100%': { transform: 'translateY(0)', opacity: '1' },
@@ -49,6 +51,15 @@ tailwind.config = {
                     '0%': { transform: 'translateY(0)', opacity: '1' },
                     '100%': { transform: 'translateY(-20px)', opacity: '0' },
                 }
+            },
+            animation: {
+                'page-enter': 'pageEnter 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'page-enter-turn': 'pageEnterTurn 0.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'tile-enter': 'tileEnter 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'content-slide': 'contentSlide 0.5s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'list-cascade': 'listCascade 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'toast-in': 'toastIn 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
+                'toast-out': 'toastOut 0.3s cubic-bezier(0.1, 0.9, 0.2, 1) forwards',
             }
         }
     }
