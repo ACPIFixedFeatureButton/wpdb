@@ -40,20 +40,20 @@
         ],
         "guide": [
           {
-            "title": "step1",
-            "text": "test"
+            "title": "Step 1.",
+            "text": "Turn off the phone."
           },
           {
-            "title": "step2",
-            "text": "turn off the phone"
+            "title": "Step 2.",
+            "text": "Hold Volume Down + Camera + Power until you see a white screen with device info and barcodes."
           },
           {
-            "title": "step 69",
-            "text": "buy an android phone"
+            "title": "Step 3.",
+            "text": "Connect your phone to your computer, wait until the "Serial" text on the bottom of the screen changes to say USB."
           },
           {
-            "title": "step 69",
-            "text": "placeholder text, please ignore."
+            "title": "Step 4.",
+            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see "INVALID VENDER ID", you have the incorrect region firmware and need to use goldcard method to debrand."
           }
         ]
       },
@@ -71,7 +71,7 @@
         },
         "firmwares": [
           {
-            "version": "Windows Phone 8.0 GDR3",
+            "version": "8.00.10501.127",
             "region": "Europe",
             "type": "NBH File",
             "size": "631.3MB",
@@ -83,6 +83,24 @@
             "type": "Full RUU",
             "size": "574.5MB",
             "url": "https://mega.nz/folder/b0Ri1J7D#Q96P3V5V-VboIjMQTFXKTQ/file/m4gQVRIQ"
+          }
+        ],
+        "guide": [
+          {
+            "title": "Step 1.",
+            "text": "Turn off the phone."
+          },
+          {
+            "title": "Step 2.",
+            "text": "Hold Volume Down + Camera + Power until you see a white screen with device info and barcodes."
+          },
+          {
+            "title": "Step 3.",
+            "text": "Connect your phone to your computer, wait until the "Serial" text on the bottom of the screen changes to say USB."
+          },
+          {
+            "title": "Step 4.",
+            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see "INVALID VENDER ID", you have the incorrect region firmware and need to use goldcard method to debrand."
           }
         ]
       },
@@ -118,7 +136,7 @@
         "name": "Samsung ATIV S (GT-I8750)",
         "codename": "GT-I8750",
         "image": "/assets/ssativs.png",
-        "required_tool": "Samsung Odin? (needs confirmation)",
+        "required_tool": "Samsung WP8 SMD Binary Downloader",
         "specs": {
           "cpu": "Snapdragon S4 (Dual-core 1.5 GHz)",
           "ram": "1GB",
@@ -169,7 +187,7 @@
         "name": "Samsung ATIV S (SGH-T899M)",
         "codename": "SGH-T899M",
         "image": "/assets/ssativs.png",
-        "required_tool": "Samsung Odin? (needs confirmation)",
+        "required_tool": "Samsung WP8 SMD Binary Downloader",
         "specs": {
           "cpu": "Snapdragon S4 (Dual-core 1.5 GHz)",
           "ram": "1GB",
@@ -220,7 +238,7 @@
         "name": "Samsung ATIV S Neo (SPH-I800)",
         "codename": "SPH-I800",
         "image": "/assets/ssativsneo.png",
-        "required_tool": "Samsung Odin? (needs confirmation)",
+        "required_tool": "Samsung WP8 SMD Binary Downloader",
         "specs": {
           "cpu": "Dual-core 1.4 GHz",
           "ram": "1GB",
@@ -271,7 +289,7 @@
         "name": "Samsung ATIV S Neo (SGH-I187)",
         "codename": "SGH-I187",
         "image": "/assets/ssativsneo.png",
-        "required_tool": "Samsung Odin? (needs confirmation)",
+        "required_tool": "Samsung WP8 SMD Binary Downloader",
         "specs": {
           "cpu": "Dual-core 1.4 GHz",
           "ram": "1GB",
@@ -386,7 +404,7 @@
         "name": "Samsung ATIV Odyssey",
         "codename": "SCH-I930",
         "image": "/assets/ssativodyssey.png",
-        "required_tool": "Samsung Odin? (needs confirmation)",
+        "required_tool": "Samsung WP8 SMD Binary Downloader",
         "specs": {
           "cpu": "Snapdragon S4 Plus (Dual-core 1.5 GHz)",
           "ram": "1GB",
@@ -496,7 +514,7 @@
           {
             "version": "Windows Phone 8.1",
             "region": "Unknown",
-            "type": "FFU?",
+            "type": "Emergency files for QFIL",
             "size": "1.01GB",
             "url": "https://www.mediafire.com/file/ddqpc88jm320lcj/Acer_Liquid_M220_RV04RC02_27112012_Win_8.1_QFIL.zip/file"
           },
