@@ -49,11 +49,11 @@
           },
           {
             "title": "Step 3.",
-            "text": "Connect your phone to your computer, wait until the "Serial" text on the bottom of the screen changes to say USB."
+            "text": "Connect your phone to your computer, wait until the \"Serial\" text on the bottom of the screen changes to say USB."
           },
           {
             "title": "Step 4.",
-            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see "INVALID VENDER ID", you have the incorrect region firmware and need to use goldcard method to debrand."
+            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see \"INVALID VENDER ID\", you have the incorrect region firmware and need to use goldcard method to debrand."
           }
         ]
       },
@@ -96,11 +96,11 @@
           },
           {
             "title": "Step 3.",
-            "text": "Connect your phone to your computer, wait until the "Serial" text on the bottom of the screen changes to say USB."
+            "text": "Connect your phone to your computer, wait until the \"Serial\" text on the bottom of the screen changes to say USB."
           },
           {
             "title": "Step 4.",
-            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see "INVALID VENDER ID", you have the incorrect region firmware and need to use goldcard method to debrand."
+            "text": "Open the downloaded RUU executable, follow the instructions on screen. If you see a missing DLL error or connection errors, install WDRT. If you see \"INVALID VENDER ID\", you have the incorrect region firmware and need to use goldcard method to debrand."
           }
         ]
       },
