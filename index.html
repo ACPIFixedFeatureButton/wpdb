@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 
 <head>
     <meta charset="UTF-8">
@@ -66,7 +66,8 @@
     </style>
 </head>
 
-<body class="bg-white text-[#333] h-screen flex flex-col overflow-hidden selection:bg-wp-blue selection:text-white">
+<body
+    class="bg-white text-[#333] h-screen flex flex-col overflow-hidden selection:bg-wp-blue selection:text-white transition-colors duration-300">
     <header class="bg-black text-white h-14 flex items-center justify-between px-4 md:px-6 shrink-0 z-50 shadow-md">
         <div class="flex items-center gap-4">
             <button onclick="toggleMobileSidebar()"
@@ -130,7 +131,8 @@
         <main id="mainContent" class="flex-1 bg-white overflow-y-auto relative p-0 w-full">
             <div id="homeView" class="w-full min-h-full flex flex-col">
                 <div class="p-6 md:p-10 pb-0">
-                    <div class="mb-6 md:mb-10 border-b border-gray-200 pb-5 animate-content-slide">
+                    <div
+                        class="mb-6 md:mb-10 border-b border-gray-200 pb-5 animate-content-slide">
                         <h1 class="text-4xl md:text-6xl text-black mb-1">welcome to wpdb</h1>
                         <div class="flex flex-wrap items-center gap-3 mt-3">
                             <span
@@ -142,11 +144,16 @@
                         </div>
                         <p class="text-base md:text-xl text-wp-blue mt-3">select a device to start</p>
                     </div>
+
+                    <div id="brandFilter"
+                        class="flex gap-6 md:gap-8 mb-6 border-b border-gray-100 overflow-x-auto pb-0 animate-content-slide opacity-0"
+                        style="animation-delay: 50ms; animation-fill-mode: forwards;"></div>
                     <div id="homeGrid"
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10"></div>
                 </div>
             </div>
-            <div id="deviceView" class="absolute inset-0 bg-white hidden flex flex-col overflow-y-auto w-full"></div>
+            <div id="deviceView"
+                class="absolute inset-0 bg-white hidden flex flex-col overflow-y-auto w-full"></div>
         </main>
     </div>
     <div id="toolsModal"
@@ -170,7 +177,8 @@
                             <i
                                 class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
                         </div>
-                        <p class="text-sm text-gray-500">Unlock bootloader and enable Mass Storage mode on Lumia
+                        <p class="text-sm text-gray-500">Unlock bootloader and enable Mass Storage
+                            mode on Lumia
                             devices.
                         </p>
                     </a>
@@ -182,7 +190,8 @@
                             <i
                                 class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
                         </div>
-                        <p class="text-sm text-gray-500">Essential flashing utility for HTC Windows Phone devices.</p>
+                        <p class="text-sm text-gray-500">Essential flashing utility for HTC Windows
+                            Phone devices.</p>
                     </a>
                     <a href="https://archive.org/details/wdrt-hl1" target="_blank" class="group block cursor-pointer">
                         <div class="flex justify-between items-center mb-1">
@@ -191,7 +200,8 @@
                             <i
                                 class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
                         </div>
-                        <p class="text-sm text-gray-500">Includes <strong>Thor2</strong> command line tool for flashing
+                        <p class="text-sm text-gray-500">Includes <strong>Thor2</strong> command line
+                            tool for flashing
                             generic FFUs.</p>
                     </a>
                 </div>
@@ -211,13 +221,15 @@
                         class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
                 </div>
                 <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
-                    <p><strong class="text-black">wpdb</strong> is a community-maintained archive of Windows Phone
+                    <p><strong class="text-black">wpdb</strong> is a community-maintained archive of
+                        Windows Phone
                         firmware files and resources for OEM devices that are not from Nokia/Microsoft.</p>
                     <p>Our mission is to preserve the legacy of Windows Phone by providing easy access to essential
                         files for device recovery.</p>
                     <p class="text-gray-400 text-xs">This project is not affiliated with Microsoft or any device
                         manufacturers. All firmware files are the property of their respective owners.</p>
-                    <p class="pt-2 border-t border-gray-100 text-gray-400 text-xs">Made with ❤️ by LumiaDB &amp; ACPI
+                    <p class="pt-2 border-t border-gray-100 text-gray-400 text-xs">Made with ❤️ by
+                        LumiaDB &amp; ACPI
                         Fixed Feature Button.</p>
                 </div>
             </div>

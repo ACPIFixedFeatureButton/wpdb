@@ -91,6 +91,7 @@ function renderHome() {
             html += `
                 <div 
                     onclick="handleTileClick(this, '${d.codename}')"
+                    data-brand="${brand.brand}"
                     class="group relative aspect-[16/9] bg-white cursor-pointer shadow-sm animate-tile-enter overflow-hidden flex flex-col"
                     style="animation-delay: ${delay}ms; opacity: 0; animation-fill-mode: forwards;"
                 >
@@ -121,6 +122,39 @@ function renderHome() {
         });
     });
     homeGrid.innerHTML = html;
+
+    // Build brand filter strip
+    const brands = wpdbData.map(b => b.brand);
+    const filterContainer = document.getElementById('brandFilter');
+    if (filterContainer) {
+        let filterHtml = `<button onclick="filterByBrand('all')" id="filter-all" class="brand-filter-btn text-2xl md:text-3xl font-light pb-1 border-b-4 border-black text-black transition-colors duration-200 whitespace-nowrap">all</button>`;
+        brands.forEach(b => {
+            filterHtml += `<button onclick="filterByBrand('${b}')" id="filter-${b}" class="brand-filter-btn text-2xl md:text-3xl font-light pb-1 border-b-4 border-transparent text-gray-300 hover:text-gray-500 transition-colors duration-200 whitespace-nowrap">${b.toLowerCase()}</button>`;
+        });
+        filterContainer.innerHTML = filterHtml;
+    }
+}
+
+function filterByBrand(brand) {
+    // Update active filter button
+    document.querySelectorAll('.brand-filter-btn').forEach(btn => {
+        btn.classList.remove('border-black', 'text-black');
+        btn.classList.add('border-transparent', 'text-gray-300');
+    });
+    const activeBtn = document.getElementById(brand === 'all' ? 'filter-all' : `filter-${brand}`);
+    if (activeBtn) {
+        activeBtn.classList.remove('border-transparent', 'text-gray-300');
+        activeBtn.classList.add('border-black', 'text-black');
+    }
+    // Show/hide tiles — disable animation so cards appear instantly
+    document.querySelectorAll('#homeGrid > div[data-brand]').forEach(tile => {
+        const visible = brand === 'all' || tile.dataset.brand === brand;
+        tile.style.display = visible ? '' : 'none';
+        if (visible) {
+            tile.style.animation = 'none';
+            tile.style.opacity = '1';
+        }
+    });
 }
 
 function handleTileClick(element, codename) {
@@ -192,8 +226,8 @@ function openDevice(codename, updateHistory = true) {
     const model = device.model || device.codename;
 
     deviceView.innerHTML = `
-        <div class="w-full min-h-full bg-white dark:bg-wp-dark pb-20">
-            <div class="sticky top-0 bg-white/95 dark:bg-[#1d1d1d]/95 backdrop-blur z-30 px-6 md:px-8 py-4 border-b border-transparent shadow-sm md:shadow-none">
+        <div class="w-full min-h-full bg-white pb-20">
+            <div class="sticky top-0 bg-white/95 backdrop-blur z-30 px-6 md:px-8 py-4 border-b border-transparent shadow-sm md:shadow-none">
                 <button onclick="goToHome()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-wp-blue transition-colors flex items-center gap-2 group">
                     <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform duration-200 ease-metro"></i>
                     <span>back</span>
@@ -206,32 +240,32 @@ function openDevice(codename, updateHistory = true) {
                 </div>
                 <div class="flex-1 text-center md:text-left w-full">
                     <span class="text-wp-blue font-bold uppercase tracking-widest text-xs mb-2 block">${brandName}</span>
-                    <h1 class="text-4xl md:text-7xl font-light text-black dark:text-white leading-none mb-4 md:-ml-0.5">${device.name}</h1>
+                    <h1 class="text-4xl md:text-7xl font-light text-black leading-none mb-4 md:-ml-0.5">${device.name}</h1>
                     <div class="flex flex-wrap justify-center md:justify-start gap-4 md:gap-6 text-sm text-gray-500 font-metro">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-code text-gray-300 dark:text-gray-600"></i>
+                            <i class="fa-solid fa-code text-gray-300"></i>
                             <span>${device.codename}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                             <i class="fa-solid fa-screwdriver-wrench text-gray-300 dark:text-gray-600"></i>
+                             <i class="fa-solid fa-screwdriver-wrench text-gray-300"></i>
                              <span>${device.required_tool}</span>
                         </div>
                         <div class="flex items-center gap-2">
-                             <i class="fa-solid fa-database text-gray-300 dark:text-gray-600"></i>
+                             <i class="fa-solid fa-database text-gray-300"></i>
                              <span>${device.firmwares.length} ${device.firmwares.length === 1 ? 'rom' : 'roms'}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="px-6 md:px-16 mb-8 border-b border-gray-100 dark:border-[#333] flex gap-6 md:gap-8 animate-content-slide opacity-0 overflow-x-auto" style="animation-delay: 150ms; animation-fill-mode: forwards;">
-                <button id="pivot-btn-downloads" onclick="switchPivot('downloads')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-black dark:text-white border-b-4 border-black dark:border-white whitespace-nowrap">
+            <div class="px-6 md:px-16 mb-8 border-b border-gray-100 flex gap-6 md:gap-8 animate-content-slide opacity-0 overflow-x-auto" style="animation-delay: 150ms; animation-fill-mode: forwards;">
+                <button id="pivot-btn-downloads" onclick="switchPivot('downloads')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-black border-b-4 border-black whitespace-nowrap">
                     downloads
                 </button>
-                <button id="pivot-btn-specs" onclick="switchPivot('specs')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 border-b-4 border-transparent whitespace-nowrap">
+                <button id="pivot-btn-specs" onclick="switchPivot('specs')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-gray-300 hover:text-gray-500 border-b-4 border-transparent whitespace-nowrap">
                     specs
                 </button>
-                <button id="pivot-btn-guide" onclick="switchPivot('guide')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-gray-300 dark:text-gray-600 hover:text-gray-500 dark:hover:text-gray-400 border-b-4 border-transparent whitespace-nowrap">
+                <button id="pivot-btn-guide" onclick="switchPivot('guide')" class="text-2xl md:text-4xl font-light pb-2 transition-colors duration-300 text-gray-300 hover:text-gray-500 border-b-4 border-transparent whitespace-nowrap">
                     guide
                 </button>
             </div>
@@ -240,52 +274,62 @@ function openDevice(codename, updateHistory = true) {
                 
                 <div id="pivot-content-downloads">
                     ${device.notes ? `
-                        <div class="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 p-4 mb-8 text-sm text-[#8a6d3b] dark:text-amber-200 shadow-sm">
+                        <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-8 text-sm text-[#8a6d3b] shadow-sm">
                             <strong class="block mb-1">Important Note</strong>
                             ${device.notes}
                         </div>
                     ` : ''}
 
                     <div class="md:hidden space-y-4">
+                        ${device.firmwares.length === 0 ? `
+                            <div class="py-16 text-center">
+                                <i class="fa-solid fa-box-open text-3xl text-gray-200 mb-4 block"></i>
+                                <p class="text-3xl font-light text-gray-300">no roms yet</p>
+                                <p class="text-sm text-gray-400 mt-2">check back later</p>
+                            </div>
+                        ` : `
                         ${device.firmwares.map(fw => `
-                            <div class="bg-gray-50 dark:bg-[#1f1f1f] p-4 border border-gray-200 dark:border-[#333] rounded-sm">
+                            <div class="bg-gray-50 p-4 border border-gray-200 rounded-sm">
                                 <div class="flex justify-between items-start mb-4">
                                     <div>
                                         <div class="text-lg font-light text-wp-blue break-all">${fw.version}</div>
                                         <span class="text-xs font-bold uppercase text-gray-400 tracking-wider">${fw.type}</span>
                                     </div>
                                 </div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400 mb-4 pb-4 border-b border-gray-200 dark:border-[#333]">
+                                <div class="text-sm text-gray-600 mb-4 pb-4 border-b border-gray-200">
                                     <span class="font-semibold">Region:</span> ${fw.region}
                                 </div>
                                 
                                 ${fw.files && fw.files.length > 0 ?
             `<div class="space-y-2">
-                                        ${fw.files.map(f => { const fUrl = getUrl(brandName, model, f); return `
+                                        ${fw.files.map(f => {
+                const fUrl = getUrl(brandName, model, f); return `
                                             <div class="flex items-center gap-2">
-                                                <button onclick="copyLink('${fUrl}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
-                                                <a href="${fUrl}" class="block w-full text-center bg-white dark:bg-[#121212] border border-gray-300 dark:border-[#444] py-3 text-sm font-bold text-gray-700 dark:text-gray-200 hover:border-wp-blue hover:text-wp-blue transition-colors">
+                                                <button onclick="copyLink('${fUrl}')" class="p-3 bg-gray-200 text-gray-600"><i class="fa-regular fa-copy"></i></button>
+                                                <a href="${fUrl}" class="block w-full text-center bg-white border border-gray-300 py-3 text-sm font-bold text-gray-700 hover:border-wp-blue hover:text-wp-blue transition-colors">
                                                     ${f.type} (${f.size})
                                                 </a>
                                             </div>
-                                        `; }).join('')}
+                                        `;
+            }).join('')}
                                     </div>`
             :
             `<div class="flex items-center gap-2">
-                                        <button onclick="copyLink('${getUrl(brandName, model, fw)}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
-                                        <a href="${getUrl(brandName, model, fw)}" class="block w-full bg-black dark:bg-white text-white dark:text-black text-center py-3 font-bold uppercase tracking-wide shadow-md active:scale-95 transition-transform">
+                                        <button onclick="copyLink('${getUrl(brandName, model, fw)}')" class="p-3 bg-gray-200 text-gray-600"><i class="fa-regular fa-copy"></i></button>
+                                        <a href="${getUrl(brandName, model, fw)}" class="block w-full bg-black text-white text-center py-3 font-bold uppercase tracking-wide shadow-md active:scale-95 transition-transform">
                                             Download (${fw.size})
                                         </a>
                                     </div>`
         }
                             </div>
                         `).join('')}
+                        `}
                     </div>
 
                     <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[600px]">
                             <thead>
-                                <tr class="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-200 dark:border-[#333]">
+                                <tr class="text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-gray-200">
                                     <th class="py-4 pr-6 pl-2 w-1/4">Version</th>
                                     <th class="py-4 px-6 w-1/4">Region</th>
                                     <th class="py-4 px-6 text-right">Download</th>
@@ -293,36 +337,38 @@ function openDevice(codename, updateHistory = true) {
                             </thead>
                             <tbody class="text-sm">
                                 ${device.firmwares.map(fw => `
-                                    <tr class="group hover:bg-gray-50 dark:hover:bg-[#1f1f1f] transition-colors border-b border-gray-100 dark:border-[#333] last:border-0">
+                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
                                         <td class="py-5 pr-6 pl-2 align-top">
-                                            <div class="text-xl font-light text-black dark:text-white group-hover:text-wp-blue transition-colors duration-200">${fw.version}</div>
-                                            <span class="inline-block mt-1 px-2 py-0.5 bg-gray-100 dark:bg-[#333] text-gray-500 dark:text-gray-300 text-[10px] uppercase font-bold tracking-wide rounded-sm">${fw.type}</span>
+                                            <div class="text-xl font-light text-black group-hover:text-wp-blue transition-colors duration-200">${fw.version}</div>
+                                            <span class="inline-block mt-1 px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] uppercase font-bold tracking-wide rounded-sm">${fw.type}</span>
                                         </td>
-                                        <td class="py-5 px-6 align-top text-gray-600 dark:text-gray-400 pt-6">
+                                        <td class="py-5 px-6 align-top text-gray-600 pt-6">
                                             ${fw.region}
                                         </td>
                                         <td class="py-5 px-6 align-top text-right pt-6">
                                             ${fw.files && fw.files.length > 0 ?
                 `<div class="flex flex-col items-end gap-2">
-                                                    ${fw.files.map(f => { const fUrl = getUrl(brandName, model, f); return `
+                                                    ${fw.files.map(f => {
+                    const fUrl = getUrl(brandName, model, f); return `
                                                         <div class="flex items-center justify-end gap-2 w-full">
                                                             <button onclick="copyLink('${fUrl}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors px-2"><i class="fa-regular fa-copy"></i></button>
-                                                            <a href="${fUrl}" class="group/btn flex items-center gap-3 pl-4 pr-3 py-1.5 border border-gray-200 dark:border-[#444] hover:border-wp-blue bg-white dark:bg-[#121212] hover:bg-wp-blue transition-all duration-200 rounded-sm">
+                                                            <a href="${fUrl}" class="group/btn flex items-center gap-3 pl-4 pr-3 py-1.5 border border-gray-200 hover:border-wp-blue bg-white hover:bg-wp-blue transition-all duration-200 rounded-sm">
                                                                 <div class="text-right">
-                                                                    <div class="text-xs font-bold text-gray-700 dark:text-gray-200 group-hover/btn:text-white uppercase">${f.type}</div>
+                                                                    <div class="text-xs font-bold text-gray-700 group-hover/btn:text-white uppercase">${f.type}</div>
                                                                     <div class="text-[10px] text-gray-400 group-hover/btn:text-white/80 font-mono">${f.size}</div>
                                                                 </div>
                                                                 <i class="fa-solid fa-download text-wp-blue group-hover/btn:text-white"></i>
                                                             </a>
                                                         </div>
-                                                    `; }).join('')}
+                                                    `;
+                }).join('')}
                                                 </div>`
                 :
                 `<div class="inline-flex items-center gap-2 justify-end">
                                                     <button onclick="copyLink('${getUrl(brandName, model, fw)}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors p-2"><i class="fa-regular fa-copy"></i></button>
-                                                    <a href="${getUrl(brandName, model, fw)}" class="inline-flex items-center gap-3 bg-black dark:bg-white hover:bg-wp-blue dark:hover:bg-wp-blue text-white dark:text-black dark:hover:text-white px-6 py-3 transition-colors shadow-lg hover:shadow-xl active:scale-95 duration-200">
+                                                    <a href="${getUrl(brandName, model, fw)}" class="inline-flex items-center gap-3 bg-black hover:bg-wp-blue text-white px-6 py-3 transition-colors shadow-lg hover:shadow-xl active:scale-95 duration-200">
                                                         <span class="font-bold tracking-wide text-xs uppercase">Download</span>
-                                                        <span class="text-white/50 dark:text-black/50 text-xs border-l border-white/20 dark:border-black/20 pl-3">${fw.size}</span>
+                                                        <span class="text-white/50 text-xs border-l border-white/20 pl-3">${fw.size}</span>
                                                     </a>
                                                 </div>`
             }
@@ -332,15 +378,22 @@ function openDevice(codename, updateHistory = true) {
                             </tbody>
                         </table>
                     </div>
+                    ${device.firmwares.length === 0 ? `
+                        <div class="py-16 text-center">
+                            <i class="fa-solid fa-box-open text-3xl text-gray-200 mb-4 block"></i>
+                            <p class="text-3xl font-light text-gray-300">no roms yet</p>
+                            <p class="text-sm text-gray-400 mt-2">check back later</p>
+                        </div>
+                    ` : ''}
                 </div>
                 
                 <div id="pivot-content-specs" class="hidden">
                     <div class="max-w-3xl">
-                        <dl class="divide-y divide-gray-100 dark:divide-[#333]">
+                        <dl class="divide-y divide-gray-100">
                             ${Object.entries(specs).map(([key, value]) => `
-                                <div class="py-4 md:py-6 grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 hover:bg-gray-50 dark:hover:bg-[#1f1f1f] transition-colors px-2 -mx-2">
+                                <div class="py-4 md:py-6 grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-4 hover:bg-gray-50 transition-colors px-2 -mx-2">
                                     <dt class="text-sm font-bold text-gray-400 uppercase tracking-widest pt-1 md:pt-2">${key}</dt>
-                                    <dd class="col-span-2 text-xl md:text-2xl font-light text-black dark:text-white">${value}</dd>
+                                    <dd class="col-span-2 text-xl md:text-2xl font-light text-black">${value}</dd>
                                 </div>
                             `).join('')}
                         </dl>
@@ -355,15 +408,15 @@ function openDevice(codename, updateHistory = true) {
                                     ${i + 1}
                                 </div>
                                 <div class="pt-1">
-                                    <h3 class="text-xl md:text-2xl font-light text-black dark:text-white mb-2">${step.title}</h3>
-                                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm md:text-base">${step.text}</p>
+                                    <h3 class="text-xl md:text-2xl font-light text-black mb-2">${step.title}</h3>
+                                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">${step.text}</p>
                                 </div>
                             </div>
                         `).join('')}
                         
-                        <div class="bg-gray-50 dark:bg-[#1f1f1f] p-6 mt-8 border-l-4 border-gray-300 dark:border-[#444]">
+                        <div class="bg-gray-50 p-6 mt-8 border-l-4 border-gray-300">
                             <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Disclaimer</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 italic">We are not responsible for bricked devices. Flashing firmware always carries a risk.</p>
+                            <p class="text-sm text-gray-500 italic">We are not responsible for bricked devices. Flashing firmware always carries a risk.</p>
                         </div>
                     </div>
                 </div>
@@ -381,9 +434,9 @@ function switchPivot(tabName) {
         const content = document.getElementById(`pivot-content-${t}`);
         if (btn && content) {
             btn.classList.replace('text-black', 'text-gray-300');
-            btn.classList.replace('dark:text-white', 'dark:text-gray-600');
+            btn.classList.replace('', '');
             btn.classList.replace('border-black', 'border-transparent');
-            btn.classList.replace('dark:border-white', 'border-transparent');
+            btn.classList.replace('', 'border-transparent');
             content.classList.add('hidden');
             content.classList.remove('animate-content-slide');
         }
@@ -394,9 +447,9 @@ function switchPivot(tabName) {
 
     if (activeBtn && activeContent) {
         activeBtn.classList.replace('text-gray-300', 'text-black');
-        activeBtn.classList.replace('dark:text-gray-600', 'dark:text-white');
+        activeBtn.classList.replace('', '');
         activeBtn.classList.replace('border-transparent', 'border-black');
-        activeBtn.classList.replace('border-transparent', 'dark:border-white');
+        activeBtn.classList.replace('border-transparent', '');
 
         activeContent.classList.remove('hidden');
         void activeContent.offsetWidth;
@@ -499,5 +552,24 @@ function toggleMobileSidebar() {
         sidebar.classList.remove('-translate-x-full');
     }
 }
+
+
+
+
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+    // Escape → go back to home if device view is visible
+    if (e.key === 'Escape' && !deviceView.classList.contains('hidden')) {
+        goToHome();
+        return;
+    }
+    // / → focus sidebar search (ignore if already in an input)
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) searchInput.focus();
+    }
+});
 
 init();
