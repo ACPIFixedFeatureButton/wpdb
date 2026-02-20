@@ -3,6 +3,17 @@ const deviceView = document.getElementById('deviceView');
 const homeGrid = document.getElementById('homeGrid');
 const sidebar = document.getElementById('deviceSidebar');
 
+const CDN_BASE = 'https://download.lumiadb.com/wpdb';
+
+function buildDownloadUrl(brand, model, filename) {
+    return `${CDN_BASE}/${encodeURIComponent(brand)}/${encodeURIComponent(model)}/${encodeURIComponent(filename)}`;
+}
+
+function getUrl(brand, model, entry) {
+    if (entry.filename) return buildDownloadUrl(brand, model, entry.filename);
+    return entry.url || '#';
+}
+
 const metroColors = [
     'bg-[#2d89ef]', 'bg-[#00aba9]', 'bg-[#2b5797]', 'bg-[#b91d47]',
     'bg-[#99b433]', 'bg-[#da532c]', 'bg-[#603cba]', 'bg-[#00a300]'
@@ -178,6 +189,7 @@ function openDevice(codename, updateHistory = true) {
 
     const specs = device.specs || { cpu: "N/A", ram: "N/A", storage: "N/A", display: "N/A", battery: "N/A" };
     const guide = device.guide || [{ title: "No Guide", text: "No flashing guide is available for this device yet." }];
+    const model = device.model || device.codename;
 
     deviceView.innerHTML = `
         <div class="w-full min-h-full bg-white dark:bg-wp-dark pb-20">
@@ -249,19 +261,19 @@ function openDevice(codename, updateHistory = true) {
                                 
                                 ${fw.files && fw.files.length > 0 ?
             `<div class="space-y-2">
-                                        ${fw.files.map(f => `
+                                        ${fw.files.map(f => { const fUrl = getUrl(brandName, model, f); return `
                                             <div class="flex items-center gap-2">
-                                                <button onclick="copyLink('${f.url}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
-                                                <a href="${f.url}" class="block w-full text-center bg-white dark:bg-[#121212] border border-gray-300 dark:border-[#444] py-3 text-sm font-bold text-gray-700 dark:text-gray-200 hover:border-wp-blue hover:text-wp-blue transition-colors">
+                                                <button onclick="copyLink('${fUrl}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
+                                                <a href="${fUrl}" class="block w-full text-center bg-white dark:bg-[#121212] border border-gray-300 dark:border-[#444] py-3 text-sm font-bold text-gray-700 dark:text-gray-200 hover:border-wp-blue hover:text-wp-blue transition-colors">
                                                     ${f.type} (${f.size})
                                                 </a>
                                             </div>
-                                        `).join('')}
+                                        `; }).join('')}
                                     </div>`
             :
             `<div class="flex items-center gap-2">
-                                        <button onclick="copyLink('${fw.url}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
-                                        <a href="${fw.url}" class="block w-full bg-black dark:bg-white text-white dark:text-black text-center py-3 font-bold uppercase tracking-wide shadow-md active:scale-95 transition-transform">
+                                        <button onclick="copyLink('${getUrl(brandName, model, fw)}')" class="p-3 bg-gray-200 dark:bg-[#333] text-gray-600 dark:text-gray-300"><i class="fa-regular fa-copy"></i></button>
+                                        <a href="${getUrl(brandName, model, fw)}" class="block w-full bg-black dark:bg-white text-white dark:text-black text-center py-3 font-bold uppercase tracking-wide shadow-md active:scale-95 transition-transform">
                                             Download (${fw.size})
                                         </a>
                                     </div>`
@@ -292,10 +304,10 @@ function openDevice(codename, updateHistory = true) {
                                         <td class="py-5 px-6 align-top text-right pt-6">
                                             ${fw.files && fw.files.length > 0 ?
                 `<div class="flex flex-col items-end gap-2">
-                                                    ${fw.files.map(f => `
+                                                    ${fw.files.map(f => { const fUrl = getUrl(brandName, model, f); return `
                                                         <div class="flex items-center justify-end gap-2 w-full">
-                                                            <button onclick="copyLink('${f.url}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors px-2"><i class="fa-regular fa-copy"></i></button>
-                                                            <a href="${f.url}" class="group/btn flex items-center gap-3 pl-4 pr-3 py-1.5 border border-gray-200 dark:border-[#444] hover:border-wp-blue bg-white dark:bg-[#121212] hover:bg-wp-blue transition-all duration-200 rounded-sm">
+                                                            <button onclick="copyLink('${fUrl}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors px-2"><i class="fa-regular fa-copy"></i></button>
+                                                            <a href="${fUrl}" class="group/btn flex items-center gap-3 pl-4 pr-3 py-1.5 border border-gray-200 dark:border-[#444] hover:border-wp-blue bg-white dark:bg-[#121212] hover:bg-wp-blue transition-all duration-200 rounded-sm">
                                                                 <div class="text-right">
                                                                     <div class="text-xs font-bold text-gray-700 dark:text-gray-200 group-hover/btn:text-white uppercase">${f.type}</div>
                                                                     <div class="text-[10px] text-gray-400 group-hover/btn:text-white/80 font-mono">${f.size}</div>
@@ -303,12 +315,12 @@ function openDevice(codename, updateHistory = true) {
                                                                 <i class="fa-solid fa-download text-wp-blue group-hover/btn:text-white"></i>
                                                             </a>
                                                         </div>
-                                                    `).join('')}
+                                                    `; }).join('')}
                                                 </div>`
                 :
                 `<div class="inline-flex items-center gap-2 justify-end">
-                                                    <button onclick="copyLink('${fw.url}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors p-2"><i class="fa-regular fa-copy"></i></button>
-                                                    <a href="${fw.url}" class="inline-flex items-center gap-3 bg-black dark:bg-white hover:bg-wp-blue dark:hover:bg-wp-blue text-white dark:text-black dark:hover:text-white px-6 py-3 transition-colors shadow-lg hover:shadow-xl active:scale-95 duration-200">
+                                                    <button onclick="copyLink('${getUrl(brandName, model, fw)}')" title="Copy Link" class="text-gray-300 hover:text-wp-blue transition-colors p-2"><i class="fa-regular fa-copy"></i></button>
+                                                    <a href="${getUrl(brandName, model, fw)}" class="inline-flex items-center gap-3 bg-black dark:bg-white hover:bg-wp-blue dark:hover:bg-wp-blue text-white dark:text-black dark:hover:text-white px-6 py-3 transition-colors shadow-lg hover:shadow-xl active:scale-95 duration-200">
                                                         <span class="font-bold tracking-wide text-xs uppercase">Download</span>
                                                         <span class="text-white/50 dark:text-black/50 text-xs border-l border-white/20 dark:border-black/20 pl-3">${fw.size}</span>
                                                     </a>
