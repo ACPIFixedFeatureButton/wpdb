@@ -27,8 +27,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
 
         ::-webkit-scrollbar-track {
@@ -36,12 +36,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
+            background: #2d89ef44;
+            border-radius: 0;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #999;
+            background: #2d89ef99;
         }
 
         body {
@@ -113,29 +113,34 @@
             class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
         <aside id="main-sidebar"
             class="fixed inset-y-0 left-0 z-40 w-full md:w-72 bg-[#f5f5f5] border-r border-gray-200 flex flex-col transform -translate-x-full md:translate-x-0 md:relative md:flex shrink-0 transition-transform duration-300 ease-metro shadow-2xl md:shadow-none pt-14 md:pt-0">
-            <div class="md:hidden flex justify-between items-center p-4 pb-0">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Collection</span>
+            <div class="md:hidden flex justify-between items-center px-4 pt-4 pb-2">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Collection</span>
                 <button onclick="toggleMobileSidebar()"
-                    class="text-2xl text-gray-400 hover:text-wp-blue transition-colors">&times;</button>
+                    class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-100 transition-colors rounded-sm">&times;</button>
             </div>
-            <div class="p-4 border-b border-gray-200 bg-[#f5f5f5]">
-                <div class="relative group">
-                    <i
-                        class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400 text-xs group-focus-within:text-wp-blue transition-colors"></i>
-                    <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="search collection..."
-                        class="w-full bg-white border border-gray-300 rounded-none pl-8 pr-2 py-2 text-sm focus:border-wp-blue focus:ring-1 focus:ring-wp-blue outline-none transition-all duration-200 ease-metro">
+            <div class="p-3 border-b border-gray-200 bg-[#f5f5f5]">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-gray-300 text-[11px]"></i>
+                    <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="Search devices..."
+                        class="w-full bg-white border border-gray-200 pl-7 pr-3 py-2 text-xs focus:border-wp-blue focus:ring-1 focus:ring-wp-blue outline-none transition-all duration-200 rounded-none text-gray-700 placeholder-gray-300">
                 </div>
             </div>
-            <div id="deviceSidebar" class="flex-1 overflow-y-auto p-4 space-y-6"></div>
+            <div id="deviceSidebar" class="flex-1 overflow-y-auto p-3 space-y-4"></div>
         </aside>
         <main id="mainContent" class="flex-1 bg-white overflow-y-auto relative p-0 w-full">
             <div id="homeView" class="w-full min-h-full flex flex-col">
                 <div class="p-6 md:p-10 pb-0">
-                    <div class="mb-6 md:mb-10 border-b border-gray-200 pb-4 animate-content-slide">
+                    <div class="mb-6 md:mb-10 border-b border-gray-200 pb-5 animate-content-slide">
                         <h1 class="text-4xl md:text-6xl text-black mb-1">welcome to wpdb</h1>
-                        <p class="text-base md:text-2xl text-wp-red mt-2">under heavy development. information might not
-                            be 100% correct.</p>
-                        <p class="text-base md:text-xl text-wp-blue">select a device to start</p>
+                        <div class="flex flex-wrap items-center gap-3 mt-3">
+                            <span
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-widest border border-amber-200">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Beta
+                            </span>
+                            <p class="text-sm text-gray-400">Information may not be 100% accurate. Some features may not
+                                work as expected.</p>
+                        </div>
+                        <p class="text-base md:text-xl text-wp-blue mt-3">select a device to start</p>
                     </div>
                     <div id="homeGrid"
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10"></div>
@@ -147,98 +152,85 @@
     <div id="toolsModal"
         class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-metro"
         onclick="toggleModal('toolsModal')">
-        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl p-8 transform transition-transform duration-500 ease-metro translate-x-full"
+        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl transform transition-transform duration-500 ease-metro translate-x-full flex flex-col"
             onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-4xl font-light text-wp-blue">tools</h2>
-                <button onclick="toggleModal('toolsModal')"
-                    class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
-            </div>
-            <div class="space-y-8">
-                <a href="https://github.com/ReneLergner/WPinternals/releases/latest" target="_blank"
-                    class="group block cursor-pointer">
-                    <div class="flex justify-between items-center mb-1">
-                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">
-                            Windows Phone Internals</h3>
-                        <i
-                            class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
-                    </div>
-                    <p class="text-sm text-gray-500">Unlock bootloader and enable Mass Storage mode on Lumia devices.
-                    </p>
-                </a>
-                <a href="https://xdaforums.com/t/the-official-ruu-of-m8-for-windows-phone-verizon-edition.2865351/"
-                    target="_blank" class="group block cursor-pointer">
-                    <div class="flex justify-between items-center mb-1">
-                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">RUU
-                            thingy idk</h3>
-                        <i
-                            class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
-                    </div>
-                    <p class="text-sm text-gray-500">Essential flashing utility for HTC phones.</p>
-                </a>
-                <a href="https://archive.org/details/wdrt-hl1" target="_blank" class="group block cursor-pointer">
-                    <div class="flex justify-between items-center mb-1">
-                        <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">
-                            Windows Device Recovery Tool</h3>
-                        <i
-                            class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
-                    </div>
-                    <p class="text-sm text-gray-500">Includes <strong>Thor2</strong> command line tool for flashing
-                        generic FFUs.</p>
-                </a>
+            <div class="h-1 bg-wp-blue shrink-0"></div>
+            <div class="p-8 flex-1 overflow-y-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-4xl font-light text-wp-blue">tools</h2>
+                    <button onclick="toggleModal('toolsModal')"
+                        class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
+                </div>
+                <div class="space-y-8">
+                    <a href="https://github.com/ReneLergner/WPinternals/releases/latest" target="_blank"
+                        class="group block cursor-pointer">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">
+                                Windows Phone Internals</h3>
+                            <i
+                                class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                        </div>
+                        <p class="text-sm text-gray-500">Unlock bootloader and enable Mass Storage mode on Lumia
+                            devices.
+                        </p>
+                    </a>
+                    <a href="https://xdaforums.com/t/the-official-ruu-of-m8-for-windows-phone-verizon-edition.2865351/"
+                        target="_blank" class="group block cursor-pointer">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">
+                                HTC RUU Flash Tool</h3>
+                            <i
+                                class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                        </div>
+                        <p class="text-sm text-gray-500">Essential flashing utility for HTC Windows Phone devices.</p>
+                    </a>
+                    <a href="https://archive.org/details/wdrt-hl1" target="_blank" class="group block cursor-pointer">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="text-xl font-semibold group-hover:text-wp-blue transition-colors duration-200">
+                                Windows Device Recovery Tool</h3>
+                            <i
+                                class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-300 group-hover:text-wp-blue"></i>
+                        </div>
+                        <p class="text-sm text-gray-500">Includes <strong>Thor2</strong> command line tool for flashing
+                            generic FFUs.</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
     <div id="aboutModal"
         class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-metro"
         onclick="toggleModal('aboutModal')">
-        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl p-8 transform transition-transform duration-500 ease-metro translate-x-full"
+        <div class="absolute right-0 top-0 h-full w-full md:w-96 bg-white shadow-2xl transform transition-transform duration-500 ease-metro translate-x-full flex flex-col"
             onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-4xl font-light text-wp-blue">about</h2>
-                <button onclick="toggleModal('aboutModal')"
-                    class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
-            </div>
-            <p class="text-gray-700 leading-relaxed mb-4">
-                <strong>wpdb</strong> is a community-maintained archive of Windows Phone firmware files and resources
-                for Windows Phone devices that are not from Nokia/Microsoft.
-                <br><br>
-                Our mission is to preserve the legacy of Windows Phone by providing easy access to essential files for
-                recovery.
-                <br><br>
-                This project is not affiliated with Microsoft or any device manufacturers. All firmware files are the
-                property of their respective owners.
-                <br><br>
-                Made with ❤️ by LumiaDB & ACPI Fixed Feature Button.
-            </p>
-        </div>
-    </div>
-    <div id="devModal"
-        class="fixed inset-0 z-[60] hidden bg-[#000000cc] backdrop-blur-[2px] transition-opacity duration-300 ease-metro flex items-center justify-center p-6">
-        <div class="bg-white dark:bg-[#1f1f1f] w-full max-w-md border-2 border-wp-blue shadow-lg transform transition-all duration-500 ease-metro translate-y-4 opacity-0 scale-95"
-            id="devModalContent">
-            <div class="p-8 pb-4">
-                <h2 class="text-3xl font-light text-wp-blue mb-2 lowercase">welcome to wpdb</h2>
-                <div class="text-black dark:text-white leading-snug text-lg font-light space-y-4">
-                    <p>this archive is currently in <strong>beta</strong>.</p>
-                    <p class="text-base text-gray-600 dark:text-gray-400">information provided here might not be 100%
-                        accurate, and you may experience occasional bugs.</p>
+            <div class="h-1 bg-wp-blue shrink-0"></div>
+            <div class="p-8 flex-1 overflow-y-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-4xl font-light text-wp-blue">about</h2>
+                    <button onclick="toggleModal('aboutModal')"
+                        class="text-2xl text-gray-400 hover:text-black md:hidden">&times;</button>
                 </div>
-            </div>
-            <div class="p-8 pt-4 flex flex-col gap-3">
-                <button onclick="dismissDevModal()"
-                    class="w-full bg-transparent border-2 border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black py-3 text-sm font-bold uppercase tracking-widest transition-colors duration-200">
-                    continue
-                </button>
+                <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+                    <p><strong class="text-black">wpdb</strong> is a community-maintained archive of Windows Phone
+                        firmware files and resources for OEM devices that are not from Nokia/Microsoft.</p>
+                    <p>Our mission is to preserve the legacy of Windows Phone by providing easy access to essential
+                        files for device recovery.</p>
+                    <p class="text-gray-400 text-xs">This project is not affiliated with Microsoft or any device
+                        manufacturers. All firmware files are the property of their respective owners.</p>
+                    <p class="pt-2 border-t border-gray-100 text-gray-400 text-xs">Made with ❤️ by LumiaDB &amp; ACPI
+                        Fixed Feature Button.</p>
+                </div>
             </div>
         </div>
     </div>
     <div id="toast"
-        class="fixed bottom-4 md:top-20 right-4 md:right-6 bg-black text-white px-6 py-4 shadow-2xl z-50 hidden flex items-center gap-3 border-l-4 border-wp-blue max-w-[90vw]">
-        <i class="fa-solid fa-check text-wp-blue"></i>
+        class="fixed bottom-4 md:top-20 right-4 md:right-6 bg-black text-white px-5 py-3.5 shadow-2xl z-50 hidden flex items-center gap-3 max-w-[90vw]">
+        <div class="w-5 h-5 bg-wp-blue flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-check text-white text-[10px]"></i>
+        </div>
         <div>
-            <h4 class="font-bold text-sm uppercase tracking-wider">Success</h4>
-            <p class="text-xs text-gray-300">Link copied to clipboard</p>
+            <h4 class="font-bold text-xs uppercase tracking-wider">Copied to clipboard</h4>
+            <p class="text-[11px] text-gray-400 mt-0.5">Link is ready to paste</p>
         </div>
     </div>
     <script src="js/app.js"></script>

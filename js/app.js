@@ -44,16 +44,17 @@ function renderSidebar() {
     let delay = 0;
     wpdbData.forEach(brand => {
         html += `
-            <div class="mb-6 brand-group animate-list-cascade" style="animation-delay: ${delay}ms; opacity: 0; animation-fill-mode: forwards;">
-                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 pl-2 border-l-2 border-wp-blue">
-                    ${brand.brand}
+            <div class="mb-5 brand-group animate-list-cascade" style="animation-delay: ${delay}ms; opacity: 0; animation-fill-mode: forwards;">
+                <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 px-3 flex items-center gap-2">
+                    <span class="flex-1">${brand.brand}</span>
+                    <span class="text-[9px] text-gray-300">${brand.devices.length}</span>
                 </h3>
-                <ul class="space-y-1">
+                <ul class="space-y-0.5">
                     ${brand.devices.map(d => `
                         <li 
                             onclick="openDevice('${d.codename}')"
                             id="nav-${d.codename}"
-                            class="sidebar-item px-3 py-1.5 cursor-pointer text-sm font-medium text-gray-600 dark:text-gray-400 border-l-4 border-transparent transition-all duration-200 ease-metro hover:text-black dark:hover:text-white hover:bg-white dark:hover:bg-[#1f1f1f] hover:border-gray-200 dark:hover:border-[#444] truncate active:scale-[0.98]"
+                            class="sidebar-item px-3 py-1.5 cursor-pointer text-sm text-gray-600 border-l-4 border-transparent transition-all duration-200 ease-metro hover:text-black hover:bg-white hover:border-gray-300 truncate active:scale-[0.98]"
                             data-name="${d.name.toLowerCase()} ${d.codename.toLowerCase()}"
                         >
                             ${d.name}
@@ -75,16 +76,18 @@ function renderHome() {
         brand.devices.forEach((d, index) => {
             const colorClass = metroColors[(d.name.charCodeAt(0) + index) % metroColors.length];
 
+            const fwCount = d.firmwares ? d.firmwares.length : 0;
             html += `
                 <div 
                     onclick="handleTileClick(this, '${d.codename}')"
-                    class="group relative aspect-[16/9] bg-white dark:bg-[#1f1f1f] cursor-pointer shadow-sm animate-tile-enter overflow-hidden flex flex-col"
+                    class="group relative aspect-[16/9] bg-white cursor-pointer shadow-sm animate-tile-enter overflow-hidden flex flex-col"
                     style="animation-delay: ${delay}ms; opacity: 0; animation-fill-mode: forwards;"
                 >
                     <div class="relative flex-1 overflow-hidden p-4 flex items-center justify-center">
-                        <div class="absolute right-[-10px] top-[-10px] text-black/5 dark:text-white/5 transform rotate-12">
+                        <div class="absolute right-[-10px] top-[-10px] text-black/5 transform rotate-12">
                              <i class="fa-brands fa-windows text-8xl"></i>
                         </div>
+                        ${fwCount > 0 ? `<span class="absolute top-2 right-2 z-10 bg-white/80 text-gray-400 text-[9px] font-bold px-1.5 py-0.5 font-mono">${fwCount}</span>` : ''}
                         <img 
                             src="${d.image}" 
                             loading="lazy"
@@ -128,8 +131,8 @@ function goToHome(updateHistory = true) {
     homeView.classList.remove('hidden');
 
     document.querySelectorAll('.sidebar-item').forEach(el => {
-        el.classList.remove('border-wp-blue', 'bg-white', 'dark:bg-[#1f1f1f]', 'text-black', 'dark:text-white', 'shadow-sm');
-        el.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+        el.classList.remove('border-wp-blue', 'bg-white', 'text-black', 'font-semibold');
+        el.classList.add('border-transparent', 'text-gray-600');
     });
 }
 
@@ -141,13 +144,13 @@ function openDevice(codename, updateHistory = true) {
     }
 
     document.querySelectorAll('.sidebar-item').forEach(el => {
-        el.classList.remove('border-wp-blue', 'bg-white', 'dark:bg-[#1f1f1f]', 'text-black', 'dark:text-white', 'shadow-sm');
-        el.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+        el.classList.remove('border-wp-blue', 'bg-white', 'text-black', 'font-semibold');
+        el.classList.add('border-transparent', 'text-gray-600');
     });
     const activeItem = document.getElementById(`nav-${codename}`);
     if (activeItem) {
-        activeItem.classList.remove('border-transparent', 'text-gray-600', 'dark:text-gray-400');
-        activeItem.classList.add('border-wp-blue', 'bg-white', 'dark:bg-[#1f1f1f]', 'text-black', 'dark:text-white', 'shadow-sm');
+        activeItem.classList.remove('border-transparent', 'text-gray-600');
+        activeItem.classList.add('border-wp-blue', 'bg-white', 'text-black', 'font-semibold');
     }
 
     const sidebar = document.getElementById('main-sidebar');
@@ -180,8 +183,8 @@ function openDevice(codename, updateHistory = true) {
         <div class="w-full min-h-full bg-white dark:bg-wp-dark pb-20">
             <div class="sticky top-0 bg-white/95 dark:bg-[#1d1d1d]/95 backdrop-blur z-30 px-6 md:px-8 py-4 border-b border-transparent shadow-sm md:shadow-none">
                 <button onclick="goToHome()" class="text-xs font-bold text-gray-400 uppercase tracking-widest hover:text-wp-blue transition-colors flex items-center gap-2 group">
-                    <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform duration-200 ease-metro"></i> 
-                    <span>Back</span>
+                    <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform duration-200 ease-metro"></i>
+                    <span>back</span>
                 </button>
             </div>
 
@@ -200,6 +203,10 @@ function openDevice(codename, updateHistory = true) {
                         <div class="flex items-center gap-2">
                              <i class="fa-solid fa-screwdriver-wrench text-gray-300 dark:text-gray-600"></i>
                              <span>${device.required_tool}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                             <i class="fa-solid fa-database text-gray-300 dark:text-gray-600"></i>
+                             <span>${device.firmwares.length} ${device.firmwares.length === 1 ? 'rom' : 'roms'}</span>
                         </div>
                     </div>
                 </div>
@@ -357,7 +364,6 @@ function openDevice(codename, updateHistory = true) {
 function switchPivot(tabName) {
     const tabs = ['downloads', 'specs', 'guide'];
 
-    // Deactivate all first
     tabs.forEach(t => {
         const btn = document.getElementById(`pivot-btn-${t}`);
         const content = document.getElementById(`pivot-content-${t}`);
@@ -417,8 +423,8 @@ function filterDevices() {
         if (!document.getElementById('empty-msg')) {
             const msg = document.createElement('div');
             msg.id = 'empty-msg';
-            msg.className = 'p-8 text-center text-gray-400';
-            msg.innerHTML = `<div class="text-4xl mb-2">:(</div><div class="text-sm font-light">No results found.</div>`;
+            msg.className = 'px-4 py-8 text-center';
+            msg.innerHTML = `<div class="text-2xl text-gray-200 mb-2"><i class="fa-solid fa-magnifying-glass"></i></div><div class="text-xs text-gray-400 uppercase tracking-widest">No results</div>`;
             document.getElementById('deviceSidebar').appendChild(msg);
         }
     } else {
@@ -482,37 +488,4 @@ function toggleMobileSidebar() {
     }
 }
 
-function dismissDevModal() {
-    const m = document.getElementById('devModal');
-    const content = document.getElementById('devModalContent');
-
-    content.classList.remove('translate-y-0', 'opacity-100', 'scale-100');
-    content.classList.add('translate-y-4', 'opacity-0', 'scale-95');
-
-    m.classList.remove('opacity-100');
-    m.classList.add('opacity-0');
-
-    setTimeout(() => {
-        m.classList.add('hidden');
-    }, 300);
-}
-
-function showDevModal() {
-    const m = document.getElementById('devModal');
-    const content = document.getElementById('devModalContent');
-
-    m.classList.remove('hidden');
-    void m.offsetWidth; // trigger reflow
-    m.classList.remove('opacity-0');
-    m.classList.add('opacity-100');
-
-    setTimeout(() => {
-        content.classList.remove('translate-y-4', 'opacity-0', 'scale-95');
-        content.classList.add('translate-y-0', 'opacity-100', 'scale-100');
-    }, 100);
-}
-
 init();
-
-// beta notice
-setTimeout(showDevModal, 1000);
