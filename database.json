@@ -38,8 +38,8 @@
             "size": "214.1MB",
             "url": "https://www.4shared.com/file/DS6h2MMpgm/RUU_Mozart_Orange_UK_13006101_.html"
           }
-         ],
-        },
+        ]
+      },
       {
         "name": "HTC 7 Pro",
         "codename": "7 pro",
@@ -68,7 +68,7 @@
             "size": "219MB",
             "url": "https://www.4shared.com/zip/J9xj52wqgm/RUU_Gold_HTC_Europe_12240101_R.html"
           }
-        ],
+        ]
       },
       {
         "name": "HTC 7 Surround",
@@ -91,7 +91,7 @@
             "size": "217.33MB",
             "url": "https://www.4shared.com/zip/A3qcS_2Q/RUU_Surround_Cingular_US_40350.html"
           }
-        ],
+        ]
       },
       {
         "name": "HTC 8X",
@@ -215,56 +215,56 @@
             "region": "AsiaSEA",
             "type": "RUU",
             "size": "185.13MB",
-            "url" : "http://www.mediafire.com/download.php?z51m35byxr0951g"
+            "url": "http://www.mediafire.com/download.php?z51m35byxr0951g"
           },
           {
             "version": "1.57.707.02",
             "region": "AsiaWWE",
             "type": "RUU",
             "size": "197.29MB",
-            "url" : "http://www.mediafire.com/download.php?9wjpb6c6sft6c6b"
+            "url": "http://www.mediafire.com/download.php?9wjpb6c6sft6c6b"
           },
           {
             "version": "2.16.666.02",
             "region": "Bell Mobility",
             "type": "RUU",
             "size": "214.75MB",
-            "url" : "http://www.mediafire.com/download.php?w8hps78bb7dp7s8"
+            "url": "http://www.mediafire.com/download.php?w8hps78bb7dp7s8"
           },
           {
             "version": "1.60.401.01",
             "region": "Europe",
             "type": "RUU",
             "size": "220.39MB",
-            "url" : "http://www.mediafire.com/download.php?9zrxchfomif3s49"
+            "url": "http://www.mediafire.com/download.php?9zrxchfomif3s49"
           },
           {
             "version": "1.61.207.01",
             "region": "O2 Germany",
             "type": "RUU",
             "size": "211.1MB",
-            "url" : "http://www.mediafire.com/download.php?1udj83jbfje2dda"
+            "url": "http://www.mediafire.com/download.php?1udj83jbfje2dda"
           },
           {
             "version": "1.68.206.03",
             "region": "O2 UK",
             "type": "RUU",
             "size": "204.12MB",
-            "url" : "http://www.mediafire.com/download.php?yofidjpvi13d41g"
+            "url": "http://www.mediafire.com/download.php?yofidjpvi13d41g"
           },
           {
             "version": "1.64.901.03",
             "region": "TIM Italy",
             "type": "RUU",
             "size": "216.35MB",
-            "url" : "http://www.mediafire.com/download.php?2aaf0a045sr1mar"
+            "url": "http://www.mediafire.com/download.php?2aaf0a045sr1mar"
           },
           {
             "version": "1.54.531.02",
             "region": "T-Mobile US",
             "type": "RUU",
             "size": "189.29MB",
-            "url" : "http://www.mediafire.com/download.php?zwmkeic577x71r4"
+            "url": "http://www.mediafire.com/download.php?zwmkeic577x71r4"
           }
         ]
       },
