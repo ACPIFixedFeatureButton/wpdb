@@ -266,7 +266,8 @@
             "size": "189.29MB",
             "url" : "http://www.mediafire.com/download.php?zwmkeic577x71r4"
           }
-        ],
+        ]
+      },
       {
         "name": "HTC One (M8) for Windows",
         "codename": "w8",
@@ -569,27 +570,6 @@
           }
         ]
       },
-      {
-        "name": "Samsung ATIV Odyssey",
-        "codename": "SCH-I930",
-        "image": "/assets/ssativodyssey.png",
-        "required_tool": "Samsung WP8 SMD Binary Downloader",
-        "model": "ATIV_Odyssey",
-        "specs": {
-          "cpu": "Snapdragon S4 Plus (Dual-core 1.5 GHz)",
-          "ram": "1GB",
-          "storage": "8GB (+MicroSD)",
-          "display": "4.0\" AMOLED (480p)",
-          "battery": "2100 mAh"
-        },
-        "firmwares": [
-          {
-            "version": "HK11-VB717-38",
-            "region": "USA (Verizon)",
-            "type": "CSC Only?",
-            "size": "9.5MB",
-            "url": "https://mega.nz/folder/b0Ri1J7D#Q96P3V5V-VboIjMQTFXKTQ/file/PkpiGLzB"
-          },
       {
         "name": "Samsung Omnia 7",
         "codename": "GT-I8700",
